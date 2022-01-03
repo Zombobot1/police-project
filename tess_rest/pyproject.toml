@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "tess_rest"
+version = "0.1.0"
+description = ""
+authors = ["Aleksander Mako <aleksander.mako@justwatch.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pytesseract = "^0.3.8"
+uvicorn = {extras = ["standard"], version = "^0.15.0"}
+fastapi = "^0.70.0"
+python-multipart = "^0.0.5"
+Pillow = "^8.4.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+[tool.poetry.scripts]
+start="tess_rest.main:start"
