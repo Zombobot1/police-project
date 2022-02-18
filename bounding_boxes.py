@@ -66,6 +66,7 @@ def extract_boxes(file):
 
     # Binarize and invert.
     thresh,img_bin = cv2.threshold(img,230,255,cv2.THRESH_BINARY)
+    #img = img_bin
     img_bin = 255-img_bin
     x0, x1, y0 = find_table_head(img_bin)
 
@@ -98,15 +99,16 @@ def extract_boxes(file):
     img_vh = skeletonize(img_vh)
 
     # Remove table lines from output image.
-    img[img_vh] = np.max(img)
+    # img[img_vh] = np.max(img)
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
-    img = cv2.dilate(img, kernel, iterations=1)
-    img = cv2.erode(img, kernel, iterations=1) # Close resulting gaps.
-
+    # img = cv2.dilate(img, kernel, iterations=1)
+    # img = cv2.erode(img, kernel, iterations=1) # Close resulting gaps.
+    # #
     # Remove table lines from binary image.
     img_bin[img_vh] = 0
     img_bin = cv2.erode(img_bin, kernel, iterations=1)
     img_bin = cv2.dilate(img_bin, kernel, iterations=2) # Close resulting gaps.
+    img_bin = cv2.erode(img_bin, kernel, iterations=1)
 
     # Extract row indices.
     single_col = img_vh[:,img_vh.shape[1]//6]
@@ -127,7 +129,6 @@ def extract_boxes(file):
 
     for i in range(n_rows):
         for j in range(n_cols):
-
             if j == 0:
                 # Label connected components of binary image patch.
                 y0, y1 = row_indices[i]+1, row_indices[i+1] + descenders_height
